@@ -1,0 +1,109 @@
+﻿Modelo,Parâmetro,Valor,Erro Padrão,p-valor,IC95% Inf,IC95% Sup,Significativo (p<0.05)
+ARIMA,EQUAÇÃO,"ARIMA(3,2,3): y(t) = c + φ_1·y(t-1) + φ_2·y(t-2) + φ_3·y(t-3) + θ_1·ε(t-1) + θ_2·ε(t-2) + θ_3·ε(t-3) + ε(t) [após 2 diferenciação(ões) ordinária(s)]",,,,,
+ARIMA,Configuração,"ARIMA(3,2,3)",,,,,
+ARIMA,AIC,2924.51,,,,,
+ARIMA,BIC,2943.22,,,,,
+ARIMA,"Usa exógenas (chuva, letivo)",Não,,,,,
+ARIMA,ar.L1,-0.9372,0.5118,0.0671,-1.9404,0.066,Não
+ARIMA,ar.L2,-0.1329,0.4062,0.7435,-0.9291,0.6633,Não
+ARIMA,ar.L3,0.0018,0.2516,0.9943,-0.4913,0.4949,Não
+ARIMA,ma.L1,-1.0737,0.4615,0.02,-1.9783,-0.1691,Sim
+ARIMA,ma.L2,-0.727,0.8087,0.3687,-2.3122,0.8581,Não
+ARIMA,ma.L3,0.7969,0.3731,0.0327,0.0656,1.5282,Sim
+ARIMA,sigma2,54814336058.2418,0,0,54814336058.2418,54814336058.2418,Sim
+,,,,,,,
+SARIMAX-12,EQUAÇÃO,"SARIMAX(0,1,2)(0,1,1)[12] com exógenas X = [Precipitação_mm, Período_Letivo]: combinação de componentes AR/MA não-sazonais e sazonais com diferenciação ordinária (1) e sazonal (1), regredida sobre X.",,,,,
+SARIMAX-12,Configuração,"SARIMAX(0,1,2)(0,1,1)[12]+exog",,,,,
+SARIMAX-12,AIC,2347.08,,,,,
+SARIMAX-12,BIC,2366.62,,,,,
+SARIMAX-12,"Usa exógenas (chuva, letivo)",Sim,,,,,
+SARIMAX-12,x1,-970.1452,5044.2602,0.8475,-10856.8952,8916.6047,Não
+SARIMAX-12,x2,0,248268.5716,1,-486606.4004,486606.4004,Não
+SARIMAX-12,const,0,0.0645,1,-0.1264,0.1264,Não
+SARIMAX-12,x3,0,0,1,0,0,Não
+SARIMAX-12,ma.L1,-1.0115,0.6063,0.0952,-2.1999,0.1768,Não
+SARIMAX-12,ma.L2,0.0377,0.5928,0.9493,-1.1242,1.1997,Não
+SARIMAX-12,ma.S.L12,-0.9274,0.1796,0,-1.2795,-0.5753,Sim
+SARIMAX-12,sigma2,92950563517.2095,0.7496,0,92950563515.7403,92950563518.6788,Sim
+,,,,,,,
+SARIMAX-6,EQUAÇÃO,"SARIMAX(1,1,2)(0,1,1)[6] com exógenas X = [Precipitação_mm, Período_Letivo]: combinação de componentes AR/MA não-sazonais e sazonais com diferenciação ordinária (1) e sazonal (1), regredida sobre X.",,,,,
+SARIMAX-6,Configuração,"SARIMAX(1,1,2)(0,1,1)[6]+exog",,,,,
+SARIMAX-6,AIC,2681.97,,,,,
+SARIMAX-6,BIC,2705.14,,,,,
+SARIMAX-6,"Usa exógenas (chuva, letivo)",Sim,,,,,
+SARIMAX-6,x1,-1549.7811,4325.2515,0.7201,-10027.2741,6927.7119,Não
+SARIMAX-6,x2,174024.1826,215813.0602,0.42,-248969.4155,597017.7806,Não
+SARIMAX-6,const,0,4.4209,1,-8.665,8.665,Não
+SARIMAX-6,x3,0,0.6448,1,-1.2638,1.2638,Não
+SARIMAX-6,ar.L1,-0.8454,0.7903,0.2848,-2.3943,0.7036,Não
+SARIMAX-6,ma.L1,-0.0978,0.5505,0.8589,-1.1768,0.9811,Não
+SARIMAX-6,ma.L2,-0.9108,0.6495,0.1608,-2.1838,0.3622,Não
+SARIMAX-6,ma.S.L6,-0.8949,0.1504,0,-1.1897,-0.6002,Sim
+SARIMAX-6,sigma2,89424711477.5366,0.0773,0,89424711477.385,89424711477.6881,Sim
+,,,,,,,
+Holt-Winters,EQUAÇÃO,Holt-Winters Aditivo: ℓ(t) = α·y(t) + (1-α)·[ℓ(t-1) + b(t-1)]; b(t) = β·[ℓ(t)-ℓ(t-1)] + (1-β)·b(t-1); s(t) = γ·[y(t)-ℓ(t)] + (1-γ)·s(t-12). Forecast: ŷ(t+h) = ℓ(t) + h·b(t) + s(t-12+h).,,,,,
+Holt-Winters,Configuração,"HW(α=0.076,β=0.043,γ=0.068)",,,,,
+Holt-Winters,AIC,2768.91,,,,,
+Holt-Winters,BIC,2812.55,,,,,
+Holt-Winters,"Usa exógenas (chuva, letivo)",Não,,,,,
+Holt-Winters,α (suavização nível),0.0757,—,—,—,—,
+Holt-Winters,β (suavização tendência),0.0433,—,—,—,—,
+Holt-Winters,γ (suavização sazonal),0.0685,—,—,—,—,
+Holt-Winters,período sazonal,12,—,—,—,—,
+,,,,,,,
+Prophet/UC,EQUAÇÃO,"UnobservedComponents (Harvey, 1989) — fallback ativado por indisponibilidade do Prophet/cmdstanpy. y(t) = μ(t) + γ(t) + β·X(t) + ε(t), onde μ(t) é tendência local linear (level + slope), γ(t) é sazonalidade trigonométrica de período 12, β·X(t) são regressores exógenos (precipitação, letivo) e ε(t) ~ N(0,σ²). Estimação por filtro de Kalman e máxima verossimilhança.",,,,,
+Prophet/UC,Configuração,UnobservedComponents(LLT + seasonal=12 + exog),,,,,
+Prophet/UC,AIC,2917.32,,,,,
+Prophet/UC,BIC,2938.16,,,,,
+Prophet/UC,"Usa exógenas (chuva, letivo)",Sim,,,,,
+Prophet/UC,modelo,NaN,—,—,—,—,
+Prophet/UC,AIC,2917.3153,—,—,—,—,
+Prophet/UC,BIC,2938.1567,—,—,—,—,
+Prophet/UC,sigma2.irregular,67795231284.4938,23338063201.7005,0.0037,22052627409.1609,113537835159.8268,Sim
+Prophet/UC,sigma2.level,122804597.9711,29802413779.3595,0.9967,-58289926409.5735,58535535605.5158,Não
+Prophet/UC,sigma2.trend,5021958750.434,7655262201.6535,0.5118,-9982355164.8069,20026272665.6749,Não
+Prophet/UC,sigma2.seasonal,67795231284.4938,43072682145.3071,0.1155,-16627225720.308,152217688289.2957,Não
+Prophet/UC,beta.x1,-701.1858,2610.5143,0.7882,-5817.7938,4415.4222,Não
+Prophet/UC,beta.x2,645.7827,846414.7667,0.9994,-1658327.1601,1659618.7255,Não
+Prophet/UC,beta.const,0,0,—,0,0,
+Prophet/UC,beta.x3,0,0,—,0,0,
+,,,,,,,
+Theta,EQUAÇÃO,"Theta Method (Assimakopoulos & Nikolopoulos, 2000): decompõe a série em duas linhas-θ — θ=0 captura tendência linear, θ=2 amplifica curvaturas locais. Forecast = média das duas linhas, extrapoladas via SES. Vencedor das competições M3 (1999) e consistentemente competitivo na M4 (2018).",,,,,
+Theta,Configuração,Theta(period=12),,,,,
+Theta,"Usa exógenas (chuva, letivo)",Não,,,,,
+Theta,theta_0 (drift linear),746.8466,—,—,—,—,
+Theta,alpha (suavização SES),0.064,—,—,—,—,
+Theta,período sazonal,12,—,—,—,—,
+,,,,,,,
+GradientBoosting,EQUAÇÃO,"Gradient Boosting com forecast DIRETO multi-step (Bontempi, Taieb & Le Borgne, 2013): para cada horizonte h ∈ {1,...,12}, treina-se modelo independente ŷ(t+h) = F_h(x_t), onde F_h = Σⱼ γⱼ·hⱼ(x). Total: 12 modelos especializados. Features: lag_1..lag_12, médias móveis, mês, precipitação, letivo, área construída m², área total m² [v3.8].",,,,,
+GradientBoosting,Configuração,"GBR-DIRECT(H=12, n=200, depth=3, lr=0.05)",,,,,
+GradientBoosting,"Usa exógenas (chuva, letivo)",Sim,,,,,
+GradientBoosting,importância_lag_1,0.1404,—,—,—,—,
+GradientBoosting,importância_lag_2,0.1067,—,—,—,—,
+GradientBoosting,importância_lag_3,0.1158,—,—,—,—,
+GradientBoosting,importância_lag_6,0.1862,—,—,—,—,
+GradientBoosting,importância_lag_12,0.1376,—,—,—,—,
+GradientBoosting,importância_mm_3,0.0899,—,—,—,—,
+GradientBoosting,importância_mm_6,0.1415,—,—,—,—,
+GradientBoosting,importância_mes,0.0621,—,—,—,—,
+GradientBoosting,importância_precipitacao,0.0106,—,—,—,—,
+GradientBoosting,importância_letivo,0.0093,—,—,—,—,
+GradientBoosting,importância_area_construida,0,—,—,—,—,
+GradientBoosting,importância_area_total,0,—,—,—,—,
+,,,,,,,
+LSTM_Forecast,EQUAÇÃO,"LSTM Forecast (v3.8): janela deslizante de 12 meses → LSTM(64) → Dense(32,ReLU) → Dense(12). Entrada x_t ∈ ℝ^5 = [y(t), precip, letivo, área_c, área_t]. Saída ŷ = W_out·h_12 + b_out ∈ ℝ^12. Perda: MSE.",,,,,
+LSTM_Forecast,Configuração,"LSTM(W=12,units=64)+exog4",,,,,
+LSTM_Forecast,"Usa exógenas (chuva, letivo)",Sim,,,,,
+LSTM_Forecast,arquitetura,NaN,—,—,—,—,
+,,,,,,,
+Ensemble,EQUAÇÃO,"Ensemble = 0.123·ARIMA + 0.115·SARIMAX-12 + 0.096·SARIMAX-6 + 0.098·Holt-Winters + 0.067·Prophet/UC + 0.142·Theta + 0.180·GradientBoosting + 0.179·LSTM_Forecast. Pesos ∝ 1/RMSE_holdout, normalizados.",,,,,
+Ensemble,Configuração,Média ponderada por 1/RMSE,,,,,
+Ensemble,"Usa exógenas (chuva, letivo)",Sim,,,,,
+Ensemble,peso_ARIMA,0.1233,—,—,—,—,
+Ensemble,peso_SARIMAX-12,0.115,—,—,—,—,
+Ensemble,peso_SARIMAX-6,0.0957,—,—,—,—,
+Ensemble,peso_Holt-Winters,0.0976,—,—,—,—,
+Ensemble,peso_Prophet/UC,0.0669,—,—,—,—,
+Ensemble,peso_Theta,0.142,—,—,—,—,
+Ensemble,peso_GradientBoosting,0.1803,—,—,—,—,
+Ensemble,peso_LSTM_Forecast,0.1792,—,—,—,—,
