@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Malha Previsao de Custos</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <style>
+    :root {
+      --ink: #1f2937;
+      --muted: #64748b;
+      --line: #d7dee8;
+      --panel: #ffffff;
+      --bg: #f4f7fb;
+      --blue: #0f4c81;
+      --green: #2e7d32;
+      --amber: #a16207;
+      --red: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    h1 { margin: 0; font-size: 24px; color: var(--blue); }
+    header p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+    header a { color: var(--blue); font-weight: 700; text-decoration: none; font-size: 13px; }
+    main { max-width: 1240px; margin: 0 auto; padding: 18px; }
+    .status {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px;
+      min-width: 0;
+    }
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--blue);
+    }
+    .metric {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1.08;
+      word-break: break-word;
+    }
+    .metric-sub { margin-top: 8px; color: var(--muted); font-size: 12px; }
+    .chart { position: relative; height: 340px; }
+    .chart-sm { position: relative; height: 260px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 7px 6px; text-align: left; vertical-align: top; }
+    th { color: var(--blue); background: #f8fafc; font-size: 11px; text-transform: uppercase; }
+    .muted { color: var(--muted); }
+    .table-wrap { overflow-x: auto; }
+    .badge { display: inline-block; min-width: 58px; text-align: center; border-radius: 999px; padding: 3px 7px; color: #fff; font-weight: 700; }
+    .ok { background: var(--green); }
+    .mid { background: var(--amber); }
+    .low { background: var(--red); }
+    @media (max-width: 900px) {
+      .span-3, .span-4, .span-5, .span-7, .span-8, .span-12 { grid-column: span 12; }
+      .chart { height: 280px; }
+      .metric { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Malha Previsao de Custos</h1>
+      <p>Forecast mensal de custos de manutencao predial em R$/mes.</p>
+    </div>
+    <nav>
+      <a href="https://adinailson88.github.io/malha-ia/">Hub Malha IA</a>
+      &nbsp;|&nbsp;
+      <a href="https://github.com/adinailson88/malha-previsao-custos">Repositorio</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="status" id="status">Carregando dados de previsao de custos...</div>
+
+    <section class="grid">
+      <div class="card span-3">
+        <h2>Meses historicos</h2>
+        <div class="metric" id="m-historico">-</div>
+        <div class="metric-sub">linhas com custo real em R$</div>
+      </div>
+      <div class="card span-3">
+        <h2>Gasto historico</h2>
+        <div class="metric" id="m-total">-</div>
+        <div class="metric-sub">soma de Custo Real (R$)</div>
+      </div>
+      <div class="card span-3">
+        <h2>Proximo forecast</h2>
+        <div class="metric" id="m-proximo">-</div>
+        <div class="metric-sub" id="m-proximo-periodo">aguardando dados</div>
+      </div>
+      <div class="card span-3">
+        <h2>Melhor RMSE</h2>
+        <div class="metric" id="m-rmse">-</div>
+        <div class="metric-sub" id="m-rmse-modelo">validacao holdout</div>
+      </div>
+
+      <div class="card span-8">
+        <h2>Serie mensal de custos e forecast</h2>
+        <div class="chart"><canvas id="chart-temporal"></canvas></div>
+      </div>
+      <div class="card span-4">
+        <h2>RMSE por modelo</h2>
+        <div class="chart-sm"><canvas id="chart-rmse"></canvas></div>
+      </div>
+
+      <div class="card span-12">
+        <h2>Forecast futuro em R$/mes</h2>
+        <div id="forecast"></div>
+      </div>
+
+      <div class="card span-12">
+        <h2>Validacao rolling-origin</h2>
+        <div id="validacao"></div>
+      </div>
+
+      <div class="card span-12">
+        <h2>Detalhes metodologicos dos modelos</h2>
+        <div class="muted">Parametros, equacoes, AIC/BIC e configuracoes extraidos de `previsao_custo_detalhes.json`.</div>
+        <div id="detalhes"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const arquivos = {
+      temporal: 'dados/previsao_custo_temporal.json',
+      detalhes: 'dados/previsao_custo_detalhes.json',
+      incertezas: 'dados/previsao_custo_incertezas.json',
+      validacao: 'dados/previsao_custo_validacao.json'
+    };
+
+    const modelos = ['ARIMA', 'SARIMAX-12', 'SARIMAX-6', 'Holt-Winters', 'Prophet/UC', 'Theta', 'GradientBoosting', 'LSTM_Forecast', 'Ensemble'];
+    const cores = {
+      'ARIMA': '#8b3a00',
+      'SARIMAX-12': '#b07000',
+      'SARIMAX-6': '#e69900',
+      'Holt-Winters': '#1a6e35',
+      'Prophet/UC': '#0055cc',
+      'Theta': '#6a1b9a',
+      'GradientBoosting': '#8b1a1a',
+      'LSTM_Forecast': '#00897b',
+      'Ensemble': '#c62828'
+    };
+    const charts = {};
+    let temporal = [];
+    let detalhes = [];
+    let validacao = [];
+
+    function num(v) {
+      if (v === null || v === undefined || v === '') return null;
+      const n = Number(String(v).replace(',', '.'));
+      return Number.isFinite(n) ? n : null;
+    }
+    function brl(v) {
+      const n = num(v) || 0;
+      return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function dataCurta(v) {
+      const d = new Date(v);
+      if (Number.isNaN(d.getTime())) return String(v || '');
+      return d.toLocaleDateString('pt-BR', { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
+    }
+    function tabela(headers, rows) {
+      return `<div class="table-wrap"><table><thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${c ?? ''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    }
+    function linhasComoObjetos(tabelaJson) {
+      const cab = tabelaJson[0] || [];
+      return (tabelaJson.slice(1) || []).filter(l => l && l.some(c => c !== '')).map(l => {
+        const obj = {};
+        cab.forEach((h, i) => obj[h] = l[i]);
+        return obj;
+      });
+    }
+    function linhasTemporais(tabelaJson) {
+      const cab = tabelaJson[0] || [];
+      const out = [];
+      for (const linha of tabelaJson.slice(1)) {
+        if (!linha || !linha[0]) break;
+        const obj = {};
+        cab.forEach((h, i) => obj[h] = linha[i]);
+        out.push(obj);
+      }
+      return out;
+    }
+    function extrairMetricasTemporal(tabelaJson) {
+      const idx = tabelaJson.findIndex(l => l && l[0] === 'Modelo' && l[1] === 'MAE');
+      if (idx < 0) return [];
+      const headers = tabelaJson[idx];
+      return tabelaJson.slice(idx + 1).filter(l => l && l[0]).map(l => {
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = l[i]);
+        return obj;
+      });
+    }
+    async function carregarJson(url) {
+      const resp = await fetch(url, { cache: 'no-store' });
+      if (!resp.ok) throw new Error(`${url}: HTTP ${resp.status}`);
+      return resp.json();
+    }
+    function renderMetricas(metricas) {
+      const historico = temporal.filter(r => num(r['Custo Real (R$)']) !== null);
+      const total = historico.reduce((s, r) => s + (num(r['Custo Real (R$)']) || 0), 0);
+      const futuros = temporal.filter(r => num(r['Custo Real (R$)']) === null && num(r.Ensemble) !== null);
+      const proximo = futuros[0];
+      const melhor = metricas
+        .filter(r => num(r.RMSE) !== null)
+        .sort((a, b) => num(a.RMSE) - num(b.RMSE))[0];
+
+      document.getElementById('m-historico').textContent = historico.length.toLocaleString('pt-BR');
+      document.getElementById('m-total').textContent = brl(total);
+      document.getElementById('m-proximo').textContent = proximo ? brl(proximo.Ensemble) : '-';
+      document.getElementById('m-proximo-periodo').textContent = proximo ? dataCurta(proximo['Período'] || proximo['Periodo']) : 'sem forecast';
+      document.getElementById('m-rmse').textContent = melhor ? brl(melhor.RMSE) : '-';
+      document.getElementById('m-rmse-modelo').textContent = melhor ? melhor.Modelo : 'validacao holdout';
+    }
+    function renderTemporal() {
+      const labels = temporal.map(r => dataCurta(r['Período'] || r['Periodo']));
+      const datasets = [
+        {
+          label: 'Custo Real (R$)',
+          data: temporal.map(r => num(r['Custo Real (R$)'])),
+          borderColor: '#111827',
+          backgroundColor: '#111827',
+          pointRadius: 2,
+          tension: 0.15
+        },
+        {
+          label: 'Ensemble',
+          data: temporal.map(r => num(r.Ensemble)),
+          borderColor: cores.Ensemble,
+          backgroundColor: cores.Ensemble,
+          pointRadius: 2,
+          tension: 0.15
+        },
+        {
+          label: 'LSTM_Forecast',
+          data: temporal.map(r => num(r.LSTM_Forecast)),
+          borderColor: cores.LSTM_Forecast,
+          backgroundColor: cores.LSTM_Forecast,
+          pointRadius: 1,
+          tension: 0.15
+        },
+        {
+          label: 'ARIMA',
+          data: temporal.map(r => num(r.ARIMA)),
+          borderColor: cores.ARIMA,
+          backgroundColor: cores.ARIMA,
+          pointRadius: 1,
+          tension: 0.15
+        }
+      ];
+      if (charts.temporal) charts.temporal.destroy();
+      charts.temporal = new Chart(document.getElementById('chart-temporal'), {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          scales: { y: { ticks: { callback: v => brl(v) } } },
+          plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${brl(ctx.parsed.y)}` } } }
+        }
+      });
+    }
+    function renderRmse(metricas) {
+      const dados = metricas.filter(r => num(r.RMSE) !== null).sort((a, b) => num(a.RMSE) - num(b.RMSE));
+      if (charts.rmse) charts.rmse.destroy();
+      charts.rmse = new Chart(document.getElementById('chart-rmse'), {
+        type: 'bar',
+        data: {
+          labels: dados.map(r => r.Modelo),
+          datasets: [{ label: 'RMSE', data: dados.map(r => num(r.RMSE)), backgroundColor: dados.map(r => cores[r.Modelo] || '#64748b') }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { x: { ticks: { callback: v => brl(v) } } },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+    function renderForecast() {
+      const futuros = temporal.filter(r => num(r['Custo Real (R$)']) === null && num(r.Ensemble) !== null).slice(0, 12);
+      document.getElementById('forecast').innerHTML = tabela(
+        ['Periodo', 'ARIMA', 'LSTM_Forecast', 'Ensemble', 'Vencedor'],
+        futuros.map(r => [
+          dataCurta(r['Período'] || r['Periodo']),
+          brl(r.ARIMA),
+          brl(r.LSTM_Forecast),
+          brl(r.Ensemble),
+          r['Vencedor (menor RMSE holdout = 76403.60)'] || ''
+        ])
+      );
+    }
+    function renderValidacao() {
+      const rows = validacao.filter(r => r.Modelo && num(r['RMSE_Médio_CV']) !== null);
+      document.getElementById('validacao').innerHTML = tabela(
+        ['Modelo', 'RMSE medio CV', 'Desvio padrao CV', 'N folds', 'Interpretacao'],
+        rows.map(r => [
+          r.Modelo,
+          brl(r['RMSE_Médio_CV']),
+          brl(r.RMSE_DesvPad_CV),
+          r.N_Folds,
+          r['Interpretação'] || r.Interpretacao || ''
+        ])
+      );
+    }
+    function renderDetalhes() {
+      const rows = detalhes.filter(r => r.Modelo && ['Configuração', 'AIC', 'BIC', 'Usa exógenas (chuva, letivo)', 'Usa exogenas (chuva, letivo)'].includes(String(r.Parâmetro || r.Parametro)));
+      document.getElementById('detalhes').innerHTML = tabela(
+        ['Modelo', 'Parametro', 'Valor'],
+        rows.slice(0, 80).map(r => [r.Modelo, r.Parâmetro || r.Parametro, r.Valor])
+      );
+    }
+    async function iniciar() {
+      try {
+        const [tempJson, detJson, incJson, valJson] = await Promise.all([
+          carregarJson(arquivos.temporal),
+          carregarJson(arquivos.detalhes),
+          carregarJson(arquivos.incertezas),
+          carregarJson(arquivos.validacao)
+        ]);
+        temporal = linhasTemporais(tempJson);
+        detalhes = linhasComoObjetos(detJson);
+        validacao = linhasComoObjetos(valJson);
+        const metricas = extrairMetricasTemporal(tempJson);
+        renderMetricas(metricas);
+        renderTemporal();
+        renderRmse(metricas);
+        renderForecast();
+        renderValidacao();
+        renderDetalhes();
+        document.getElementById('status').textContent = `Dados carregados: ${temporal.length} pontos temporais, ${metricas.length} modelos com metricas e ${validacao.length} linhas de validacao. Valores exibidos em reais (BRL).`;
+      } catch (err) {
+        document.getElementById('status').textContent = `Falha ao carregar dados: ${err.message}`;
+      }
+    }
+    iniciar();
+  </script>
+</body>
+</html>
