@@ -69,6 +69,12 @@ O workflow `previsao_custo_global.yml` precisa do secret:
 
 O valor esperado e o JSON da conta de servico convertido para Base64, pois o workflow reconstrui `autenticacao_google.json` com `base64 -d`.
 
+## Particionamento do ecossistema
+
+A estrategia de divisao do `malha-ia` em repositorios menores, a relacao com os artigos e a decisao entre importar dados do hub ou acessar diretamente a planilha estao documentadas em:
+
+[`docs/PARTICIONAMENTO_REPOSITORIOS_E_ARTIGOS.md`](docs/PARTICIONAMENTO_REPOSITORIOS_E_ARTIGOS.md)
+
 ## Licenca
 
 Informação insuficiente para verificar.
