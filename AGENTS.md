@@ -9,7 +9,7 @@ Escopo permitido:
 
 1. Previsao temporal de custos em reais.
 2. Dashboard e snapshots `previsao_custo_*`.
-3. Workflow `previsao_custo_global.yml`.
+3. Workflows de sincronizacao dos snapshots publicos.
 4. Documentacao do Artigo 3.
 
 Fora do escopo:
@@ -21,8 +21,4 @@ Fora do escopo:
 
 Regra de dados:
 
-`malha-ia` permanece como hub central. Este repositorio deve guardar apenas snapshots e artefatos pertinentes ao eixo de custos.
-
-Secret esperado:
-
-`AUTENTICACAO_GOOGLE`, em Base64, reconstruido pelo workflow como `autenticacao_google.json`.
+`malha-ia` permanece como hub central. Este repositorio deve guardar apenas snapshots e artefatos pertinentes ao eixo de custos. Nao exigir `AUTENTICACAO_GOOGLE` neste repositorio; o acesso autenticado a planilha fica centralizado no hub.

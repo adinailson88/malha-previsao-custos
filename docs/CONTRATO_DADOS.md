@@ -38,11 +38,11 @@ Nem todos os modelos precisam estar preenchidos em todas as linhas. O dashboard 
 
 ## Regra de fronteira
 
-`CHAMADOS` nao deve ser duplicado aqui como fonte primaria. Quando for necessario recalcular custos, usar `motor_previsao_custos.py` com acesso autenticado a planilha operacional.
+`CHAMADOS` nao deve ser duplicado aqui como fonte primaria. Quando for necessario recalcular custos, usar o fluxo autenticado do hub `malha-ia`; este repositorio consome os snapshots publicos resultantes.
 
 ## Secret
 
-O workflow pesado depende de `AUTENTICACAO_GOOGLE`, em Base64. O arquivo reconstruido no CI e `autenticacao_google.json`.
+Os workflows deste repositorio nao dependem de `AUTENTICACAO_GOOGLE`. A credencial Google, quando necessaria, fica restrita ao hub `malha-ia`.
 
 ## Limitacoes
 
