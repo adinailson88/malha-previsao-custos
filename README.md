@@ -27,8 +27,8 @@ Ficam fora deste repositorio:
 6. `dados/previsao_custo_validacao.json`: validacao rolling-origin.
 7. `scripts/baixar_dados_hub.py`: baixa snapshots publicos do hub `malha-ia`.
 8. `scripts/exportar_dados_csv.py`: gera CSVs canonicos para auditoria e artigo.
-9. `.github/workflows/previsao_custo_global.yml`: workflow pesado para recalcular custos na planilha.
-10. `.github/workflows/atualizar-dados-hub.yml`: workflow leve para atualizar snapshots a partir do hub.
+9. `.github/workflows/previsao_custo_global.yml`: workflow de compatibilidade que sincroniza as previsoes publicas do hub.
+10. `.github/workflows/atualizar-dados-hub.yml`: workflow periodico para atualizar snapshots a partir do hub.
 
 ## Execucao local
 
@@ -55,19 +55,9 @@ python scripts\baixar_dados_hub.py
 python scripts\exportar_dados_csv.py
 ```
 
-Executar recalculo completo contra Google Sheets:
+## Recalculo autenticado
 
-```powershell
-python motor_previsao_custos.py --apenas-previsao-custos
-```
-
-## Secret necessario
-
-O workflow `previsao_custo_global.yml` precisa do secret:
-
-`AUTENTICACAO_GOOGLE`
-
-O valor esperado e o JSON da conta de servico convertido para Base64, pois o workflow reconstrui `autenticacao_google.json` com `base64 -d`.
+O recalculo completo contra Google Sheets fica centralizado no repositorio `malha-ia`, que publica os snapshots em `dados/*.json`. Este repositorio nao precisa de `AUTENTICACAO_GOOGLE` para atualizar o dashboard.
 
 ## Particionamento do ecossistema
 

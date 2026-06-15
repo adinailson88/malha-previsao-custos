@@ -81,14 +81,14 @@ Vantagens:
 
 ### 5.2. Modo pesado: recalcular na planilha
 
-Este modo so e necessario quando o repositorio menor precisa recalcular dados, escrever novas abas ou atualizar resultados diretamente no Google Sheets.
+Este modo so deve ficar no hub `malha-ia`, quando for necessario recalcular dados, escrever novas abas ou atualizar resultados diretamente no Google Sheets.
 
 Nesse modo, o repositorio menor:
 
 1. usa o motor Python do eixo;
 2. autentica via Google Sheets API;
 3. reconstrui `autenticacao_google.json` no workflow;
-4. precisa do secret `AUTENTICACAO_GOOGLE`;
+4. precisa do secret `AUTENTICACAO_GOOGLE` apenas no hub;
 5. escreve ou atualiza abas na planilha operacional.
 
 Exemplo no eixo de custos:
@@ -112,7 +112,7 @@ Para dashboard, artigo e leitura publica, basta importar os JSONs do `malha-ia`.
 
 ## 7. Secret `AUTENTICACAO_GOOGLE`
 
-Quando o acesso direto a planilha for necessario, o workflow usa o secret:
+Quando o acesso direto a planilha for necessario, o workflow do hub usa o secret:
 
 ```text
 AUTENTICACAO_GOOGLE
@@ -202,7 +202,7 @@ A estrategia mais segura e:
 1. manter o `malha-ia` como hub central;
 2. fazer os repositorios menores consumirem JSONs do hub por padrao;
 3. deixar workflows pesados disponiveis, mas dependentes de secret;
-4. configurar `AUTENTICACAO_GOOGLE` apenas nos repositorios que realmente forem recalcular dados;
+4. configurar `AUTENTICACAO_GOOGLE` apenas no hub `malha-ia`, enquanto os repositorios derivados sincronizam snapshots publicos;
 5. nao duplicar `CHAMADOS`;
 6. nao publicar credenciais;
 7. documentar em cada repositorio a fronteira exata do eixo.
@@ -211,6 +211,6 @@ A estrategia mais segura e:
 
 Para leitura, painel e artigo, basta importar do `malha-ia`.
 
-Para recalcular, escrever ou atualizar a planilha, precisa API Google Sheets e secret.
+Para recalcular, escrever ou atualizar a planilha, usar API Google Sheets e secret no hub. Para publicar os repositorios derivados, sincronizar os snapshots publicos.
 
 O particionamento nao substitui o hub. Ele transforma o hub em uma base operacional comum e cria repositorios menores, mais limpos e diretamente associados aos artigos.
