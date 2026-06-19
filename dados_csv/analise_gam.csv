@@ -1,0 +1,13 @@
+campo,valor
+status_geral,adequado_com_transformacao
+familia_recomendada,Gamma com link log ou Gaussian sobre log1p(custo)
+observacoes_historicas,109
+coeficiente_variacao,1.6858
+outliers_iqr,12
+benchmark_status,executado
+benchmark_metodo,base_aditiva_fourier_log1p
+benchmark_RMSE,102908.4904
+benchmark_MAE,90545.6751
+comparacao_status,pior_que_melhor_modelo_publicado
+comparacao_modelo_referencia,GradientBoosting
+comparacao_delta_rmse,24590.8904

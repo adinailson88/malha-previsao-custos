@@ -15,6 +15,8 @@ O repositorio `adinailson88/malha-ia` permanece como hub central dos dados. Este
 | `CONTEXTO_SAZONAL` | `dados/contexto_sazonal.json` | Contexto de sazonalidade usado pelos motores |
 | `FILTROS_DISPONIVEIS` | `dados/filtros_disponiveis.json` | Sufixos para futuras visoes filtradas |
 | `Area Manutencao` | `dados/area_manutencao.json` | Area construida e area total como variaveis exogenas/contextuais |
+| Artefato local | `dados/protocolo_zuur.json` | Diagnostico transversal de exploracao de dados segundo Zuur et al. (2010) |
+| Artefato local | `dados/analise_gam.json` | Adequacao de GAM para custos, com alerta de cauda longa e transformacao |
 
 ## Indicador-alvo
 
