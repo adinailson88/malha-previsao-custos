@@ -1,0 +1,124 @@
+{
+  "artefato": "analise_gam",
+  "eixo": "previsao_custos",
+  "fonte": "dados/previsao_custo_temporal.json",
+  "status_geral": "adequado_com_transformacao",
+  "alvo": "Custo Real (R$)",
+  "familia_recomendada": "Gamma com link log ou Gaussian sobre log1p(custo)",
+  "suporte_amostral": {
+    "observacoes_historicas": 109,
+    "minimo_operacional": 36,
+    "media": 165783.1779,
+    "coeficiente_variacao": 1.6858,
+    "outliers_iqr": 12
+  },
+  "efeitos_aditivos": [
+    {
+      "termo": "s(tendencia)",
+      "status": "recomendado",
+      "evidencia": "Inclinacao linear preliminar por mes: R$ 1334.98."
+    },
+    {
+      "termo": "s(mes, cyclic=True)",
+      "status": "detectavel",
+      "mes_maior_media": 11,
+      "mes_menor_media": 7,
+      "amplitude_media_mensal": 364748.7322,
+      "evidencia": "Maior custo medio no mes 11; menor custo medio no mes 7."
+    },
+    {
+      "termo": "tratamento de cauda",
+      "status": "obrigatorio",
+      "evidencia": "Foram detectados 12 outliers por IQR; custos exigem transformacao/diagnostico de influencia."
+    }
+  ],
+  "benchmark_aditivo": {
+    "status": "executado",
+    "metodo": "base_aditiva_fourier_log1p",
+    "familia_operacional": "Gaussian sobre log1p(custo), compativel com avaliacao preliminar de Gamma/log",
+    "holdout_meses": 12,
+    "metricas_holdout": {
+      "n": 12,
+      "MAE": 90545.6751,
+      "RMSE": 102908.4904,
+      "MAPE_percentual": 263.2057
+    },
+    "coeficientes": [
+      9.816072,
+      4.462858,
+      -2.922269,
+      -0.036219,
+      0.260705,
+      -0.055673,
+      -0.042067
+    ],
+    "forecast_12_meses": [
+      {
+        "periodo": "2026-06-01",
+        "previsao": 62369.4
+      },
+      {
+        "periodo": "2026-07-01",
+        "previsao": 63142.03
+      },
+      {
+        "periodo": "2026-08-01",
+        "previsao": 72391.66
+      },
+      {
+        "periodo": "2026-09-01",
+        "previsao": 87531.5
+      },
+      {
+        "periodo": "2026-10-01",
+        "previsao": 100447.25
+      },
+      {
+        "periodo": "2026-11-01",
+        "previsao": 102943.91
+      },
+      {
+        "periodo": "2026-12-01",
+        "previsao": 96130.23
+      },
+      {
+        "periodo": "2027-01-01",
+        "previsao": 87263.57
+      },
+      {
+        "periodo": "2027-02-01",
+        "previsao": 80259.46
+      },
+      {
+        "periodo": "2027-03-01",
+        "previsao": 73829.08
+      },
+      {
+        "periodo": "2027-04-01",
+        "previsao": 65718.3
+      },
+      {
+        "periodo": "2027-05-01",
+        "previsao": 56973.45
+      }
+    ],
+    "leitura": "Benchmark aditivo executavel sem dependencias novas; revisar pontos influentes antes de inferencia GAM completa."
+  },
+  "comparacao_modelos_publicados": {
+    "status": "pior_que_melhor_modelo_publicado",
+    "modelo_publicado_referencia": "GradientBoosting",
+    "rmse_modelo_publicado": 78317.6,
+    "rmse_benchmark_aditivo": 102908.4904,
+    "delta_rmse": 24590.8904
+  },
+  "recomendacao_dashboard": "Exibir GAM como modelo explicavel de custo, sempre junto da transformacao e do aviso de cauda longa.",
+  "proximas_validacoes": [
+    "Ajustar GAM com validacao temporal rolling-origin e comparar contra GradientBoosting, Theta e Ensemble.",
+    "Testar log1p(custo) e familia Gamma antes de qualquer afirmacao inferencial.",
+    "Revisar residuos e pontos influentes antes de usar curvas suaves no artigo."
+  ],
+  "limites": [
+    "Este artefato diagnostica adequacao e desenho do GAM; nao declara superioridade empirica.",
+    "Sem benchmark temporal executado, usar a frase: Informação insuficiente para verificar."
+  ]
+}
