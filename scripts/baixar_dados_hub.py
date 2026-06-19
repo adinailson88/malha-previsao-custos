@@ -23,6 +23,15 @@ ARQUIVOS = [
     "area_manutencao.json",
 ]
 
+ARQUIVOS_OPCIONAIS = [
+    "previsao_custo_diagnostico.json",
+    "previsao_custo_residuos.json",
+    "previsao_custo_qqplot.json",
+    "previsao_custo_pressupostos.json",
+    "previsao_custo_granger.json",
+    "previsao_custo_por_categoria.json",
+]
+
 
 def baixar_json(url: str, timeout: int) -> object:
     req = Request(url, headers={"User-Agent": "malha-previsao-custos/1.0"})
@@ -45,10 +54,11 @@ def main() -> int:
         "gerado_em_utc": datetime.now(timezone.utc).isoformat(),
         "hub_raw": args.base_raw.rstrip("/"),
         "arquivos": {},
+        "opcionais_ausentes": {},
         "falhas": {},
     }
 
-    for nome in ARQUIVOS:
+    for nome in ARQUIVOS + ARQUIVOS_OPCIONAIS:
         url = f"{args.base_raw.rstrip('/')}/{nome}"
         try:
             dados = baixar_json(url, args.timeout)
@@ -58,7 +68,8 @@ def main() -> int:
             manifest["arquivos"][nome] = {"url": url, "linhas": linhas}
             print(f"OK {nome}: {linhas if linhas is not None else 'json'}")
         except (HTTPError, URLError, TimeoutError, json.JSONDecodeError, OSError) as exc:
-            manifest["falhas"][nome] = f"{type(exc).__name__}: {exc}"
+            destino_falha = "opcionais_ausentes" if nome in ARQUIVOS_OPCIONAIS else "falhas"
+            manifest[destino_falha][nome] = f"{type(exc).__name__}: {exc}"
             print(f"AVISO {nome}: {exc}")
 
     (saida / "manifest_hub.json").write_text(

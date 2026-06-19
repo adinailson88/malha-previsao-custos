@@ -1,0 +1,106 @@
+{
+  "gerado_em": "2026-06-18T02:50:46.767606+00:00",
+  "repositorio": "malha-previsao-custos",
+  "eixo": "previsao mensal de custos",
+  "referencia": "Zuur, A.F., Ieno, E.N. & Elphick, C.S. (2010). A protocol for data exploration to avoid common statistical problems. Methods in Ecology and Evolution, 1(1), 3-14. doi:10.1111/j.2041-210X.2009.00001.x",
+  "escopo": "Exploracao sobre snapshots publicos do eixo de custos; sem base bruta e sem credenciais.",
+  "diagnostico_do_que_falta": [
+    "dados/previsao_custo_diagnostico.json",
+    "dados/previsao_custo_residuos.json",
+    "dados/previsao_custo_qqplot.json",
+    "dados/previsao_custo_pressupostos.json"
+  ],
+  "passos": [
+    {
+      "passo": 1,
+      "titulo": "Outliers em Y e covariaveis",
+      "status": "verificado",
+      "evidencia": "dados/previsao_custo_temporal.json",
+      "resultado": {
+        "n": 109,
+        "min": 613.05,
+        "q1": 24752.3,
+        "q3": 161137.95,
+        "max": 1863633.07,
+        "outliers_baixos": 0,
+        "outliers_altos": 12
+      },
+      "mudanca_minima": "Exibir outliers do custo mensal e manter tratamento ja existente no motor."
+    },
+    {
+      "passo": 2,
+      "titulo": "Homogeneidade de variancia",
+      "status": "precisa calcular",
+      "evidencia": "dados/previsao_custo_pressupostos.json",
+      "resultado": {
+        "status": "Informação insuficiente para verificar."
+      },
+      "mudanca_minima": "Sincronizar/exportar PREVISAO_CUSTO_PRESSUPOSTOS do hub."
+    },
+    {
+      "passo": 3,
+      "titulo": "Normalidade",
+      "status": "precisa calcular",
+      "evidencia": "dados/previsao_custo_pressupostos.json e dados/previsao_custo_qqplot.json",
+      "resultado": {
+        "status": "Informação insuficiente para verificar."
+      },
+      "mudanca_minima": "Publicar Q-Q plot e testes de residuos de custo ja gerados pelo motor."
+    },
+    {
+      "passo": 4,
+      "titulo": "Zeros ou ausencia estrutural",
+      "status": "verificado",
+      "evidencia": "dados/previsao_custo_temporal.json",
+      "resultado": {
+        "n_zeros": 0,
+        "n_observacoes": 109
+      },
+      "mudanca_minima": "Distinguir mes sem custo registrado de dado ausente."
+    },
+    {
+      "passo": 5,
+      "titulo": "Colinearidade entre covariaveis",
+      "status": "precisa calcular",
+      "evidencia": "dados/previsao_custo_pressupostos.json",
+      "resultado": {
+        "status": "Informação insuficiente para verificar."
+      },
+      "mudanca_minima": "Sincronizar VIF de regressores exogenos do motor de custos."
+    },
+    {
+      "passo": 6,
+      "titulo": "Relacoes entre Y e X",
+      "status": "precisa calcular",
+      "evidencia": "dados/previsao_custo_granger.json",
+      "resultado": {
+        "status": "Informação insuficiente para verificar."
+      },
+      "mudanca_minima": "Adicionar previsao_custo_granger.json quando o hub publicar a aba correspondente."
+    },
+    {
+      "passo": 7,
+      "titulo": "Interacoes",
+      "status": "precisa calcular",
+      "evidencia": "dados/previsao_custo_por_categoria.json",
+      "resultado": {
+        "status": "Informação insuficiente para verificar."
+      },
+      "mudanca_minima": "Publicar resumo de custo por categoria quando houver recortes suficientes."
+    },
+    {
+      "passo": 8,
+      "titulo": "Independencia temporal",
+      "status": "parcial",
+      "evidencia": "dados/previsao_custo_validacao.json",
+      "resultado": {
+        "folds_validacao": 8,
+        "independencia": {
+          "status": "Informação insuficiente para verificar."
+        }
+      },
+      "mudanca_minima": "Manter rolling-origin e publicar Durbin-Watson/Ljung-Box de custo."
+    }
+  ],
+  "metodo_artigo": "No eixo de custos, o protocolo de Zuur et al. (2010) deve ser aplicado sobre a serie mensal de valores em reais, com diagnostico de outliers monetarios, heterocedasticidade, normalidade dos residuos, colinearidade de variaveis exogenas e independencia temporal por validacao rolling-origin. Nesta versao, o repositorio ja permite explorar a serie e a validacao, mas a publicacao dos snapshots de residuos, Q-Q plot, diagnostico e pressupostos ainda e necessaria para completar os oito passos."
+}

@@ -1,0 +1,9 @@
+passo,titulo,status,evidencia,mudanca_minima
+1,Outliers em Y e covariaveis,verificado,dados/previsao_custo_temporal.json,Exibir outliers do custo mensal e manter tratamento ja existente no motor.
+2,Homogeneidade de variancia,precisa calcular,dados/previsao_custo_pressupostos.json,Sincronizar/exportar PREVISAO_CUSTO_PRESSUPOSTOS do hub.
+3,Normalidade,precisa calcular,dados/previsao_custo_pressupostos.json e dados/previsao_custo_qqplot.json,Publicar Q-Q plot e testes de residuos de custo ja gerados pelo motor.
+4,Zeros ou ausencia estrutural,verificado,dados/previsao_custo_temporal.json,Distinguir mes sem custo registrado de dado ausente.
+5,Colinearidade entre covariaveis,precisa calcular,dados/previsao_custo_pressupostos.json,Sincronizar VIF de regressores exogenos do motor de custos.
+6,Relacoes entre Y e X,precisa calcular,dados/previsao_custo_granger.json,Adicionar previsao_custo_granger.json quando o hub publicar a aba correspondente.
+7,Interacoes,precisa calcular,dados/previsao_custo_por_categoria.json,Publicar resumo de custo por categoria quando houver recortes suficientes.
+8,Independencia temporal,parcial,dados/previsao_custo_validacao.json,Manter rolling-origin e publicar Durbin-Watson/Ljung-Box de custo.
