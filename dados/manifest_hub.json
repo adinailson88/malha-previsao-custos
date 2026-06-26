@@ -1,18 +1,18 @@
 {
-  "gerado_em_utc": "2026-06-26T08:30:46.183717+00:00",
+  "gerado_em_utc": "2026-06-26T11:45:31.068270+00:00",
   "hub_raw": "https://raw.githubusercontent.com/adinailson88/malha-ia/main/dados",
   "arquivos": {
     "previsao_custo_temporal.json": {
       "url": "https://raw.githubusercontent.com/adinailson88/malha-ia/main/dados/previsao_custo_temporal.json",
-      "linhas": 148
+      "linhas": 144
     },
     "previsao_custo_detalhes.json": {
       "url": "https://raw.githubusercontent.com/adinailson88/malha-ia/main/dados/previsao_custo_detalhes.json",
-      "linhas": 108
+      "linhas": 109
     },
     "previsao_custo_incertezas.json": {
       "url": "https://raw.githubusercontent.com/adinailson88/malha-ia/main/dados/previsao_custo_incertezas.json",
-      "linhas": 896
+      "linhas": 868
     },
     "previsao_custo_validacao.json": {
       "url": "https://raw.githubusercontent.com/adinailson88/malha-ia/main/dados/previsao_custo_validacao.json",
@@ -20,7 +20,7 @@
     },
     "contexto_sazonal.json": {
       "url": "https://raw.githubusercontent.com/adinailson88/malha-ia/main/dados/contexto_sazonal.json",
-      "linhas": 126
+      "linhas": 117
     },
     "filtros_disponiveis.json": {
       "url": "https://raw.githubusercontent.com/adinailson88/malha-ia/main/dados/filtros_disponiveis.json",
