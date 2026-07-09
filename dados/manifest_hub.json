@@ -1,5 +1,5 @@
 {
-  "gerado_em_utc": "2026-07-08T23:36:16.398881+00:00",
+  "gerado_em_utc": "2026-07-09T03:27:06.100564+00:00",
   "hub_raw": "https://raw.githubusercontent.com/adinailson88/malha-ia/main/dados",
   "arquivos": {
     "previsao_custo_temporal.json": {
@@ -34,8 +34,8 @@
   "opcionais_ausentes": {
     "previsao_custo_diagnostico.json": "HTTPError: HTTP Error 404: Not Found",
     "previsao_custo_residuos.json": "HTTPError: HTTP Error 404: Not Found",
-    "previsao_custo_qqplot.json": "HTTPError: HTTP Error 404: Not Found",
-    "previsao_custo_pressupostos.json": "HTTPError: HTTP Error 404: Not Found",
+    "previsao_custo_qqplot.json": "HTTPError: HTTP Error 429: Too Many Requests",
+    "previsao_custo_pressupostos.json": "HTTPError: HTTP Error 429: Too Many Requests",
     "previsao_custo_granger.json": "HTTPError: HTTP Error 404: Not Found",
     "previsao_custo_por_categoria.json": "HTTPError: HTTP Error 404: Not Found"
   },
