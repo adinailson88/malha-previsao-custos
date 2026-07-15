@@ -38,6 +38,7 @@ Esta pasta reúne referências do acervo bibliográfico mantido no Google Drive 
 - **Resumo:** Norma técnica (2ª edição, 25 páginas) que estabelece os requisitos para a gestão do sistema de manutenção de edificações, cobrindo organização, tipos de manutenção (rotineira, corretiva, preventiva), conteúdo do relatório de inspeção, programa de manutenção, planejamento anual e previsão orçamentária, controle do processo (orçamento/contratação), documentação (fluxo, registros, arquivo) e indicadores gerenciais. Inclui anexos informativos com modelos de programa de manutenção preventiva por periodicidade (semanal a trienal) e listas de registros/checklists por sistema predial.
 - **Situação da ficha:** Resumo disponível no índice do acervo.
 - **Acesso:** [Abrir o arquivo no Google Drive](https://drive.google.com/file/d/1NTQClUozckrSlTpshLK3n19MTxxM0-tT/view?usp=drivesdk)
+- **Ficha detalhada:** [Consultar resumo completo, citações e páginas](https://github.com/adinailson88/lerArquivosReferencias/blob/main/Refer%C3%AAncia%20Bibliogr%C3%A1fica%20-%20Drive/fichas/2012_OUTRO_ManutencaoPredial_ABNT_NBR_5674_Manutencao_Edificacoes.md)
 
 ### 2. Talib, Y.; Rajagopalan, P.; Yang, R. J. (2013) — Evaluation of building performance for strategic facilities management in healthcare: A case study of a public hospital in Australia
 
