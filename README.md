@@ -3,7 +3,7 @@
 Repositorio do eixo de previsao de custos do ecossistema Malha IA. O objetivo e separar o Artigo 3, mantendo aqui apenas motor, dashboard, snapshots e documentacao relacionados a custos mensais de manutencao predial.
 
 Repositorio-hub de dados: [adinailson88/malha-ia](https://github.com/adinailson88/malha-ia)  
-Dashboard previsto: `https://adinailson88.github.io/malha-previsao-custos/`
+Dashboard publicado: `https://adinailson88.github.io/malha-previsao-custos/`
 
 ## Escopo
 
